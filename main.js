@@ -19,7 +19,7 @@ fetch ('https://fakestoreapi.com/products')
             <div class="row">
                 <div class="col">
                     <h4 class="card-text d-md-inline-block">${product.price}kr</h4>
-                    <a href="#" class="btn btn-secondary d-md-inline-block ms-md-3" data-bs-toggle="modal" data-bs-target="#${product.id}">Buy</a>
+                    <a href="#" class="btn btn-secondary d-md-inline-block ms-md-3" data-bs-toggle="modal" data-bs-target="#${product.id}">Add to Cart</a>
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@ fetch ('https://fakestoreapi.com/products')
                         <p>${product.description}</p>
                         <div>
                             <h4 class="card-text d-md-inline-block">${product.price}kr</h4>
-                            <a onclick="addItem(${product.id})"  class="btn btn-secondary d-md-inline-block ms-md-3"  >Confirm Purchase</a>
+                            <a onclick="addItem(${product.id})"  class="btn btn-secondary d-md-inline-block ms-md-3">Add to Cart</a>
                         </div>
                     </div>
                 </div>
@@ -76,7 +76,7 @@ async function addItem(itemId){
     let product = "https://fakestoreapi.com/products/" + itemId; 
     shoppingCart.push(await this.getJSON(product));
     localStorage.setItem("storedCart", JSON.stringify(shoppingCart));
-    window.location.href = "checkout.html";
+    window.location.href = "Shopping-cart.html";
 }
 
 
