@@ -19,7 +19,7 @@ fetch ('https://fakestoreapi.com/products')
             <div class="row">
                 <div class="col">
                     <h4 class="card-text d-md-inline-block">&dollar;${product.price}</h4>
-                    <a href="#" onclick="addItem(${product.id})" class="btn btn-secondary d-md-inline-block ms-md-3">Add to Cart</a>
+                    <a onclick="addItem(${product.id})" class="btn btn-secondary d-md-inline-block ms-md-3">Add to Cart</a>
                 </div>
             </div>
         </div>
@@ -75,7 +75,7 @@ async function getJSON(product) {
 async function addItem(itemId){
     let product = "https://fakestoreapi.com/products/" + itemId; 
     shoppingCart.push(await this.getJSON(product));
-    localStorage.setItem(`${itemId}`, JSON.stringify(shoppingCart));
+    localStorage.setItem(`storedCart`, JSON.stringify(shoppingCart));
 }
 
 
@@ -280,18 +280,22 @@ function decreaseAmount(item){
         adjustTotal()
     }  
 }
-//Not the neatest solution but very straight forward and simple
+
 function removeProduct(item){
     let id = parseInt(item.id)
-    let tempArr = JSON.parse(localStorage.getItem(id))
+    let tempArr = JSON.parse(localStorage.getItem('storedCart'))
     item.parentElement.parentElement.parentElement.parentElement.     parentElement.remove()
-    
-    localStorage.removeItem(`${item.id}`)
+    for(i = 0; i < tempArr.length; i++){
+        if(tempArr[i].id === id){
+            tempArr.splice(i,1)
+            console.log(tempArr)
+        }
+    }
+    localStorage.setItem('storedCart', JSON.stringify(tempArr))
+    adjustTotal()
 }
-//to show the stored items onload in shoppingcart
 
 function displayAddedProducts(){
-    
     const loadedCart= JSON.parse(localStorage.getItem('storedCart'))
     loadedCart.forEach(product => {
         let markup = `
@@ -345,5 +349,9 @@ function adjustTotal(){
         parseFloat((priceTotal += x).toFixed(2))
     }
     priceTotalCol.innerHTML = priceTotal
+}
+function emptyCart(){
+    localStorage.removeItem('storedCart')
+    location.reload()
 }
 
