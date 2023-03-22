@@ -1,8 +1,8 @@
-fetch ('https://fakestoreapi.com/products')
-.then(res => { 
-    return res.json();
+fetch ('https://fakestoreapi.com/products') 
+.then(res => {      
+    return res.json(); 
 })
-.then(data => {
+.then(data => {         
     data.forEach(product => {
         let description = product.description;
         let title = product.title;
@@ -18,8 +18,8 @@ fetch ('https://fakestoreapi.com/products')
                `<a href = "#" data-bs-toggle="modal" data-bs-target="#${product.id}">...more</a>`) : description}</p>
             <div class="row">
                 <div class="col">
-                    <h4 class="card-text d-md-inline-block">${product.price}kr</h4>
-                    <a href="#" class="btn btn-secondary d-md-inline-block ms-md-3" data-bs-toggle="modal" data-bs-target="#${product.id}">Add to Cart</a>
+                    <h4 class="card-text d-md-inline-block">&dollar;${product.price}</h4>
+                    <a href="#" onclick="addItem(${product.id})" class="btn btn-secondary d-md-inline-block ms-md-3">Add to Cart</a>
                 </div>
             </div>
         </div>
@@ -75,8 +75,7 @@ async function getJSON(product) {
 async function addItem(itemId){
     let product = "https://fakestoreapi.com/products/" + itemId; 
     shoppingCart.push(await this.getJSON(product));
-    localStorage.setItem("storedCart", JSON.stringify(shoppingCart));
-    window.location.href = "Shopping-cart.html";
+    localStorage.setItem(`${itemId}`, JSON.stringify(shoppingCart));
 }
 
 
@@ -249,4 +248,102 @@ function isEmail(email) {
     return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
 }
 
+function increaseAmount(item){
+    let amountId = item.id
+    let amountCol = document.querySelector(`#amount${amountId}`)
+    let currentAmount = amountCol.innerHTML
+    let newAmount = parseInt(currentAmount)+1 
+    amountCol.innerHTML = newAmount
+    let priceCol = document.querySelector(`#price${amountId}`)
+    let price = parseFloat(priceCol.innerHTML)
+    let priceSumCol = document.querySelector(`#priceSum${amountId}`)
+    let priceSum = parseFloat(priceSumCol.innerHTML)
+    let newSum = parseFloat((priceSum+price).toFixed(2))
+    priceSumCol.innerHTML = newSum
+    adjustTotal()
+}
+function decreaseAmount(item){
+    let amountId = item.id
+    let amountCol = document.querySelector(`#amount${amountId}`)
+    let currentAmount = amountCol.innerHTML
+    let newAmount = parseInt(currentAmount)-1
+    let priceCol = document.querySelector(`#price${amountId}`)
+    let price = parseFloat(priceCol.innerHTML)
+    let priceSumCol = document.querySelector(`#priceSum${amountId}`)
+    let priceSum = parseFloat(priceSumCol.innerHTML)
+    let newSum = parseFloat((priceSum-price).toFixed(2))
+    priceSumCol.innerHTML = newSum
+    if(parseInt(currentAmount) <= 0){
+        removeProduct(item)
+    }else{
+        amountCol.innerHTML = newAmount
+        adjustTotal()
+    }  
+}
+//Not the neatest solution but very straight forward and simple
+function removeProduct(item){
+    let id = parseInt(item.id)
+    let tempArr = JSON.parse(localStorage.getItem(id))
+    item.parentElement.parentElement.parentElement.parentElement.     parentElement.remove()
+    
+    localStorage.removeItem(`${item.id}`)
+}
+//to show the stored items onload in shoppingcart
+
+function displayAddedProducts(){
+    
+    const loadedCart= JSON.parse(localStorage.getItem('storedCart'))
+    loadedCart.forEach(product => {
+        let markup = `
+        <div class="row p-2 borders bg-white mb-2" >
+            <div class="col col-12 ">
+                <div class="row">
+                    <div class="col ">
+                        <img src="${product.image}" style="object-fit: contain; height:60px;">
+                    </div>
+                    <div class="col">
+                        <div class="col">Amount:</div>
+                        <div class="col" id="amount${product.id}">1</div>
+                    </div>
+                    <div class="col">
+                        <div class="col justify-content-center d-flex">${product.title}</div>
+                    </div>
+                    <div class="col">
+                        <div class="col">&dollar;Price:</div>
+                        <div class="col d-flex" id="price${product.id}">${product.price}</div>
+                    </div>
+                    <div class="col">
+                        <div class="col">&dollar;Total:</div>
+                        <div class="col priceSum"" d-flex" id="priceSum${product.id}">${product.price}</div>
+                    </div>
+                    <div class="col ">
+                        <div class="btn btn-outline-secondary d-flex justify-content-center" onclick="increaseAmount(this)" id ="${product.id}">&plus;</div>
+                    </div>
+                    <div class="col ">
+                        <div class="btn btn-outline-secondary d-flex justify-content-center" onclick="decreaseAmount(this)" id ="${product.id}">&minus;</div>
+                    </div>
+                    <div class="col">
+                        <div class="btn btn-danger d-flex justify-content-center" onclick="removeProduct(this)" id ="${product.id}">Remove</div>
+                    </div>
+                </div>     
+            </div>
+        </div>
+        `
+    const productCol = document.createElement('div');
+    productCol.classList.add('col');
+    productCol.innerHTML = markup;
+    document.querySelector('#insertPlace').appendChild(productCol);
+    adjustTotal()
+    })  
+}
+function adjustTotal(){
+    let priceTotalCol = document.querySelector('#priceTotal')
+    let tempArr = Array.from(document.getElementsByClassName('priceSum'))
+    let priceTotal = 0.0
+    for(i = 0; i < tempArr.length; i++){
+        let x = parseFloat((tempArr[i].innerHTML)) 
+        parseFloat((priceTotal += x).toFixed(2))
+    }
+    priceTotalCol.innerHTML = priceTotal
+}
 
