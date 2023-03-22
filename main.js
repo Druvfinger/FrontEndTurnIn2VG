@@ -126,10 +126,6 @@ function successPurchase() {
   
     // Set modal text
     var modalText = document.getElementById("modal-bodyText");
-    const loadedCart= JSON.parse(localStorage.getItem('storedCart'))
-   
-    modalText.appendChild(document.createTextNode(loadedCart[0].title));
-    modalText.appendChild(document.createElement("br"));
     modalText.appendChild(document.createTextNode("Shipped to:"));
     modalText.appendChild(document.createElement("br"));
     modalText.appendChild(document.createTextNode(username.value.trim()));
@@ -343,10 +339,12 @@ function displayAddedProducts(){
 function adjustTotal(){
     let priceTotalCol = document.querySelector('#priceTotal')
     let tempArr = Array.from(document.getElementsByClassName('priceSum'))
-    let priceTotal = 0.0
-    for(i = 0; i < tempArr.length; i++){
-        let x = parseFloat((tempArr[i].innerHTML)) 
-        parseFloat((priceTotal += x).toFixed(2))
+    let priceTotal = 0
+    for(i = 0; i < tempArr.length;i++){
+        let x = parseFloat(tempArr[i].innerHTML)
+        let y = parseFloat((priceTotal += x).toFixed(2))
+        priceTotal = parseFloat(y)
+
     }
     priceTotalCol.innerHTML = priceTotal
 }
