@@ -73,9 +73,10 @@ async function getJSON(product) {
 // Add item to shopping Cart
 
 async function addItem(itemId){
-    let product = "https://fakestoreapi.com/products/" + itemId; 
+    let product = "https://fakestoreapi.com/products/" + itemId;
     shoppingCart.push(await this.getJSON(product));
-    localStorage.setItem(`storedCart`, JSON.stringify(shoppingCart));
+    
+    localStorage.setItem('storedCart', JSON.stringify(shoppingCart));
 }
 
 
