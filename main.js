@@ -1,6 +1,6 @@
 fetch ('https://fakestoreapi.com/products') 
 .then(res => {      
-    return res.json(); 
+    return res.json();
 })
 .then(data => {         
     data.forEach(product => {
@@ -75,7 +75,6 @@ async function getJSON(product) {
 async function addItem(itemId){
     let product = "https://fakestoreapi.com/products/" + itemId;
     shoppingCart.push(await this.getJSON(product));
-    
     localStorage.setItem('storedCart', JSON.stringify(shoppingCart));
 }
 
