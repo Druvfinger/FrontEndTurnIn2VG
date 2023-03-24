@@ -18,7 +18,7 @@ To learn how webdevelopment works and how to use API's to fetch data.
 * Make cart button have a count of how many products are in the cart [ ]
 * Fix so that you can't add duplicates that it increases amount of first product instead [ ]
 * Implement function to sort by category [ ]
-* Implement searchfunction [ ]
+* Implement search function [ ]
 
 
 
