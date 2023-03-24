@@ -3,7 +3,7 @@
 ## Schoolproject made for our frontend course 
 
 ### Purpose of project
-To learn how webdevelopment works and how to use API's to fetch data.
+To learn how web development works and how to use API's to fetch data.
 
 ### What functions does the Website have?
 * Add to cart which adds the product to local storage
