@@ -13,12 +13,12 @@ To learn how webdevelopment works and how to use API's to fetch data.
 * Validates input during checkout
 
 ### What is left to be implemented
-* Fix clipping on homepage []
-* Make Button so that you can access cart from anywhere on website []
-* Make cart button have a count of how many products are in the cart []
-* Fix so that you can't add duplicates that it increases amount of first product instead []
-* Implement function to sort by category []
-* Implement searchfunction []
+* Fix clipping on homepage [ ]
+* Make Button so that you can access cart from anywhere on website [ ]
+* Make cart button have a count of how many products are in the cart [ ]
+* Fix so that you can't add duplicates that it increases amount of first product instead [ ]
+* Implement function to sort by category [ ]
+* Implement searchfunction [ ]
 
 
 
